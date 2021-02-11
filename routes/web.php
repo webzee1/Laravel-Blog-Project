@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-// use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\User\UserDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +17,10 @@ use App\Http\Controllers\User\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/admin/users', function () {
+    return view('admin.users.index');
 });
 
 Auth::routes();
@@ -42,7 +46,7 @@ Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'namespace' => 'Admin' , 
 Route::group(['as' => 'user.' , 'prefix' => 'user' , 'namespace' => 'User' , 'middleware' => ['auth' , 'user']],
     function () {
 
-        Route::get('dashboard' , [DashboardController::class, 'index' ])->name('dashboard');
+        Route::get('dashboard' , [UserDashboardController::class, 'index' ])->name('dashboard');
     
     });
 
