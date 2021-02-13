@@ -18,7 +18,7 @@
                     </li>
 
                     <li class="active">
-                        <a href="{{url('admin/users')}}"> <i class="menu-icon fa fa-user"></i>Users</a>
+                        <a href="{{route('admin.user.index')}}"> <i class="menu-icon fa fa-user"></i>Users</a>
                     </li>
                     
                    

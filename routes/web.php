@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\User\UserDashboardController;
 
 /*
@@ -19,9 +20,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/users', function () {
-    return view('admin.users.index');
-});
+// Route::get('/admin/users', function () {
+//     return view('admin.users.index');
+// });
 
 Auth::routes();
 
@@ -30,11 +31,17 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 //////////////////////////////////// Admin /////////////////////////////////////////////////
+// ['as' => 'admin.' , 'prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => ['auth' , 'admin']
 
-Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => ['auth' , 'admin']],
+
+
+
+
+Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'middleware' => ['auth' , 'admin']],
     function () {
 
         Route::get('dashboard' , [DashboardController::class, 'index' ])->name('dashboard');
+        Route::resource('user' , UserController::class);
     
     });
 
