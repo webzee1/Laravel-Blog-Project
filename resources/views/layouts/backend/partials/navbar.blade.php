@@ -24,6 +24,10 @@
                     <li class="active">
                         <a href="{{route('admin.category.index')}}"> <i class="menu-icon fa fa-file"></i>Category</a>
                     </li>
+                   
+                    <li class="active">
+                        <a href="{{route('admin.post.index')}}"> <i class="menu-icon fa fa-file"></i>Post</a>
+                    </li>
                     
                    
                    

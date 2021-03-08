@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PostController;
 
 
 
@@ -49,6 +50,7 @@ Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'middleware' => ['auth' ,
         Route::get('dashboard' , [DashboardController::class, 'index' ])->name('dashboard');
         Route::resource('user' , UserController::class)->except(['create' , 'show' , 'edit' , 'store']);
         Route::resource('category' , CategoryController::class)->except(['create' , 'show' , 'edit']);
+        Route::resource('post' , PostController::class);
     
     });
 
