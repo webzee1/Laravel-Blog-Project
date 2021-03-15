@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -99,8 +100,12 @@ class UserController extends Controller
             Toastr::warning('Admin Can not delete themselves !!');
             return redirect()->back();
         }
+        
+        if ($user->image !== 'default.jpg' && Storage::disk('public')->exists('user/' . $user->image)) {
+            Storage::disk('public')->delete('user/' . $user->image);
+        }
 
-        $user->delete();
+        $user->delete(); 
         Toastr::success('User successfully deleted :)');
         return redirect()->back();
     }

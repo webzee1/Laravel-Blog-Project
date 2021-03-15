@@ -48,6 +48,10 @@ Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'middleware' => ['auth' ,
     function () {
 
         Route::get('dashboard' , [DashboardController::class, 'index' ])->name('dashboard');
+        Route::get('profile' , [DashboardController::class, 'showProfile' ])->name('profile');
+        Route::put('profile' , [DashboardController::class, 'updateProfile' ])->name('profile.update');
+        Route::put('profile/password' , [DashboardController::class, 'changePassword' ])->name('profile.password');
+
         Route::resource('user' , UserController::class)->except(['create' , 'show' , 'edit' , 'store']);
         Route::resource('category' , CategoryController::class)->except(['create' , 'show' , 'edit']);
         Route::resource('post' , PostController::class);
