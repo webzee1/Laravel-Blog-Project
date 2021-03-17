@@ -23,9 +23,9 @@ use App\Http\Controllers\User\UserDashboardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Route::get('/admin/users', function () {
 //     return view('admin.users.index');
@@ -33,7 +33,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/posts', [App\Http\Controllers\HomeController::class, 'posts'])->name('posts');
+Route::get('/categories', [App\Http\Controllers\HomeController::class, 'categories'])->name('categories');
+Route::get('/post/{slug}', [App\Http\Controllers\HomeController::class, 'post'])->name('post');
 
 
 
