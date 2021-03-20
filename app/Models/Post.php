@@ -23,4 +23,12 @@ class Post extends Model
     {
         return $this->hasMany('App\Models\Tag' , 'postID' , 'id');
     }
+
+    //Define Scope
+    //Published()
+
+    public function scopePublished($query)
+    {
+        return $query->where('status' , 1);
+    }
 }
