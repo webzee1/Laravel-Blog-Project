@@ -14,6 +14,7 @@ use App\Models\Tag;
 
 
 use App\Http\Controllers\User\UserDashboardController;
+use App\Http\Controllers\User\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,11 @@ Route::get('/search' , [App\Http\Controllers\HomeController::class, 'search'])->
 Route::get('/tag/{name}', [App\Http\Controllers\HomeController::class, 'tagPosts'])->name('tag.posts');
 
 
+Route::post('/comment/{post}', [App\Http\Controllers\CommentController::class, 'store'])->name('comment.store');
+
+
+
+
 //////////////////////////////////// Admin /////////////////////////////////////////////////
 // ['as' => 'admin.' , 'prefix' => 'admin' , 'namespace' => 'Admin' , 'middleware' => ['auth' , 'admin']
 
@@ -63,6 +69,9 @@ Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'middleware' => ['auth' ,
         Route::resource('user' , UserController::class)->except(['create' , 'show' , 'edit' , 'store']);
         Route::resource('category' , CategoryController::class)->except(['create' , 'show' , 'edit']);
         Route::resource('post' , PostController::class);
+
+        Route::get('/comments' , [App\Http\Controllers\Admin\CommentController::class, 'index'])->name('comment.index');
+        Route::delete('/comment/{id}' , [App\Http\Controllers\Admin\CommentController::class, 'destroy'])->name('comment.destroy');
     
     });
 
@@ -71,10 +80,12 @@ Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'middleware' => ['auth' ,
 
 //////////////////////////////////// User /////////////////////////////////////////////////
 
-Route::group(['as' => 'user.' , 'prefix' => 'user' , 'namespace' => 'User' , 'middleware' => ['auth' , 'user']],
+Route::group(['as' => 'user.' , 'prefix' => 'user' ,  'middleware' => ['auth' , 'user']],
     function () {
 
         Route::get('dashboard' , [UserDashboardController::class, 'index' ])->name('dashboard');
+        Route::get('comments' , [CommentController::class, 'index' ])->name('comment.index');
+        Route::delete('/comment/{id}' , [CommentController::class, 'destroy'])->name('comment.destroy');
     
     });
 
