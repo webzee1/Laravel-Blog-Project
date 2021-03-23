@@ -46,7 +46,8 @@ Route::get('/search' , [App\Http\Controllers\HomeController::class, 'search'])->
 Route::get('/tag/{name}', [App\Http\Controllers\HomeController::class, 'tagPosts'])->name('tag.posts');
 
 
-Route::post('/comment/{post}', [App\Http\Controllers\CommentController::class, 'store'])->name('comment.store');
+Route::post('/comment/{post}', [App\Http\Controllers\CommentController::class, 'store'])->name('comment.store')->middleware('auth');
+Route::post('/comment-reply/{comment}', [App\Http\Controllers\CommentReplyController::class, 'store'])->name('reply.store')->middleware('auth');
 
 
 
@@ -72,6 +73,9 @@ Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'middleware' => ['auth' ,
 
         Route::get('/comments' , [App\Http\Controllers\Admin\CommentController::class, 'index'])->name('comment.index');
         Route::delete('/comment/{id}' , [App\Http\Controllers\Admin\CommentController::class, 'destroy'])->name('comment.destroy');
+        
+        Route::get('/reply-comments' , [App\Http\Controllers\Admin\CommentReplyController::class, 'index'])->name('comment-reply.index');
+        Route::delete('/reply-comment/{id}' , [App\Http\Controllers\Admin\CommentReplyController::class, 'destroy'])->name('comment-reply.destroy');
     
     });
 
@@ -86,6 +90,9 @@ Route::group(['as' => 'user.' , 'prefix' => 'user' ,  'middleware' => ['auth' , 
         Route::get('dashboard' , [UserDashboardController::class, 'index' ])->name('dashboard');
         Route::get('comments' , [CommentController::class, 'index' ])->name('comment.index');
         Route::delete('/comment/{id}' , [CommentController::class, 'destroy'])->name('comment.destroy');
+
+        Route::get('/reply-comments' , [App\Http\Controllers\User\CommentReplyController::class, 'index'])->name('reply-comment.index');
+        Route::delete('/reply-comment/{id}' , [App\Http\Controllers\User\CommentReplyController::class, 'destroy'])->name('reply-comment.destroy');
     
     });
 
