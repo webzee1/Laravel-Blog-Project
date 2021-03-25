@@ -28,10 +28,16 @@ public function posts()
 
 public function post($slug)
 {
-    $post = Post::where('slug' , $slug)->Published()->first();
-    $posts = Post::latest()->take(3)->Published()->get();
-    // $categories = Category::take(10)->get();
-    return view('post', compact('post' , 'posts'));
+    $post = Post::where('slug', $slug)->published()->first();
+        // $posts = Post::latest()->take(3)->published()->get();
+        // Increase View count
+        $postKey = 'post_'.$post->id;
+        if(!Session::has($postKey)){
+            $post->increment('view_count');
+            Session::put($postKey, 1);
+        }
+
+        return view('post', compact('post'));
 }
 
 public function categories()
@@ -67,6 +73,18 @@ public function search(Request $request)
         $tags->appends(['search' => $name]);
 
         return view('tagPosts', compact('tags', 'query'));
+    }
+
+    public function likePost($post){
+        // Check if user already liked the post or not
+        $user = Auth::user();
+        $likePost = $user->likedPosts()->where('post_id', $post)->count();
+        if($likePost == 0){
+            $user->likedPosts()->attach($post);
+        } else{
+            $user->likedPosts()->detach($post);
+        }
+        return redirect()->back();
     }
 
 

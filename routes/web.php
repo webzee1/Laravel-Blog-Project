@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CommentReplyController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PostController;
@@ -14,7 +17,6 @@ use App\Models\Tag;
 
 
 use App\Http\Controllers\User\UserDashboardController;
-use App\Http\Controllers\User\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,17 +39,19 @@ use App\Http\Controllers\User\CommentController;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/posts', [App\Http\Controllers\HomeController::class, 'posts'])->name('posts');
-Route::get('/post/{slug}', [App\Http\Controllers\HomeController::class, 'post'])->name('post');
-Route::get('/categories', [App\Http\Controllers\HomeController::class, 'categories'])->name('categories');
-Route::get('/category/{slug}', [App\Http\Controllers\HomeController::class, 'categoryPost'])->name('category.post');
-Route::get('/search' , [App\Http\Controllers\HomeController::class, 'search'])->name('search');
-Route::get('/tag/{name}', [App\Http\Controllers\HomeController::class, 'tagPosts'])->name('tag.posts');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/posts', [HomeController::class, 'posts'])->name('posts');
+Route::get('/post/{slug}', [HomeController::class, 'post'])->name('post');
+Route::get('/categories', [HomeController::class, 'categories'])->name('categories');
+Route::get('/category/{slug}', [HomeController::class, 'categoryPost'])->name('category.post');
+Route::get('/search' , [HomeController::class, 'search'])->name('search');
+Route::get('/tag/{name}', [HomeController::class, 'tagPosts'])->name('tag.posts');
+Route::post('/like-post/{post}', [HomeController::class, 'likePost'])->name('post.like')->middleware('auth');
+
+Route::post('/comment/{post}', [CommentController::class, 'store'])->name('comment.store')->middleware('auth');
+Route::post('/comment-reply/{comment}', [CommentReplyController::class, 'store'])->name('reply.store')->middleware('auth');
 
 
-Route::post('/comment/{post}', [App\Http\Controllers\CommentController::class, 'store'])->name('comment.store')->middleware('auth');
-Route::post('/comment-reply/{comment}', [App\Http\Controllers\CommentReplyController::class, 'store'])->name('reply.store')->middleware('auth');
 
 
 
@@ -76,7 +80,9 @@ Route::group(['as' => 'admin.' , 'prefix' => 'admin' , 'middleware' => ['auth' ,
         
         Route::get('/reply-comments' , [App\Http\Controllers\Admin\CommentReplyController::class, 'index'])->name('comment-reply.index');
         Route::delete('/reply-comment/{id}' , [App\Http\Controllers\Admin\CommentReplyController::class, 'destroy'])->name('comment-reply.destroy');
-    
+        
+        Route::get('/post-liked-users/{post}' , [PostController::class, 'LikedUsers'])->name('post.like.users');
+
     });
 
 
@@ -88,12 +94,13 @@ Route::group(['as' => 'user.' , 'prefix' => 'user' ,  'middleware' => ['auth' , 
     function () {
 
         Route::get('dashboard' , [UserDashboardController::class, 'index' ])->name('dashboard');
-        Route::get('comments' , [CommentController::class, 'index' ])->name('comment.index');
-        Route::delete('/comment/{id}' , [CommentController::class, 'destroy'])->name('comment.destroy');
+        Route::get('comments' , [App\Http\Controllers\User\CommentController::class, 'index' ])->name('comment.index');
+        Route::delete('/comment/{id}' , [App\Http\Controllers\User\CommentController::class, 'destroy'])->name('comment.destroy');
 
         Route::get('/reply-comments' , [App\Http\Controllers\User\CommentReplyController::class, 'index'])->name('reply-comment.index');
         Route::delete('/reply-comment/{id}' , [App\Http\Controllers\User\CommentReplyController::class, 'destroy'])->name('reply-comment.destroy');
-    
+        
+        Route::get('/user-liked-posts' , [UserDashboardController::class, 'likedposts' ])->name('like.posts');
     });
 
 

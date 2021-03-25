@@ -29,8 +29,12 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
-    
+    public function likedUsers()
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
 
+    
     //Define Scope
     //Published()
 

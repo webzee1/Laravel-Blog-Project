@@ -67,41 +67,69 @@
                   </p>
                 </div>
                 <div class="bottom-wrapper">
-                  <div class="row">
-                    <div class="col-lg-4 single-b-wrap col-md-12">
-                      <i class="fa fa-heart-o" aria-hidden="true"></i>
-                      lily and 4 people like this
-                    </div>
-                    <div class="col-lg-4 single-b-wrap col-md-12">
-                      <i class="fa fa-comment-o" aria-hidden="true"></i> 06
-                      comments
-                    </div>
-                    <div class="col-lg-4 single-b-wrap col-md-12">
-                      <ul class="social-icons">
-                        <li>
-                          <a href="#"
-                            ><i class="fa fa-facebook" aria-hidden="true"></i
-                          ></a>
-                        </li>
-                        <li>
-                          <a href="#"
-                            ><i class="fa fa-twitter" aria-hidden="true"></i
-                          ></a>
-                        </li>
-                        <li>
-                          <a href="#"
-                            ><i class="fa fa-dribbble" aria-hidden="true"></i
-                          ></a>
-                        </li>
-                        <li>
-                          <a href="#"
-                            ><i class="fa fa-behance" aria-hidden="true"></i
-                          ></a>
-                        </li>
-                      </ul>
-                    </div>
+              <div class="row">
+                <div class="col-lg-4 single-b-wrap col-md-12">
+                 @guest
+                      <i class="fa fa-heart-o" aria-hidden="true"></i>{{$post->likedUsers->count()}} people like this
+                  @else
+                  <a href="#" onclick="document.getElementById('like-form-{{$post->id}}').submit();"> <i class="fa fa-heart" aria-hidden="true" style="color: {{Auth::user()->likedPosts()->where('post_id', $post->id)->count() > 0 ? 'red' : ''}}"></i></a>
+                      {{$post->likedUsers->count()}} people like this
+                  
+                      <form action="{{route('post.like',$post->id)}}" method="POST" style="display: none" id="like-form-{{$post->id}}">
+                      @csrf
+                      </form>
+                  @endguest
+                </div>
+                <div class="col-lg-4 single-b-wrap col-md-12">
+                  <i class="fa fa-eye" aria-hidden="true"></i> {{$post->view_count}}
+                  views
+                </div>
+                <div class="col-lg-4 single-b-wrap col-md-12">
+                  <i class="fa fa-comment-o" aria-hidden="true"></i> {{$post->comments->count()}}
+                  comments
+                </div>
+                <div class="row mx-1">
+                  <div class="col-lg-6 single-b-wrap col-md-12 pt-4">
+                    <h5>Share it on your social media account.</h5>
+                   </div>
+                  <div class="col-lg-6 single-b-wrap col-md-12 mt-3" id="social-links">
+                    <ul class="social-icons">
+                      <li> 
+                        <a href="#" id="gmail-btn"
+                          ><i class="fa fa-envelope-o" aria-hidden="true" style="color: #cf3e39; font-size: 2rem"></i></a>
+                      </li>
+                      <li> 
+                        <a href="#" id="facebook-btn"
+                          ><i class="fa fa-facebook-square" aria-hidden="true" style="color: #3b5998; font-size: 2rem"></i></a>
+                      </li>
+                      <li>
+                        <a href="#" id="gplus-btn"
+                          ><i class="fa fa-google-plus-square" aria-hidden="true" style="color: #dd4b39; font-size: 2rem"></i>
+                      </a>
+                      </li>
+                      <li>
+                        <a href="#" id="twitter-btn"
+                          ><i class="fa fa-twitter-square" aria-hidden="true" style="color: #1da1f2; font-size: 2rem"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" id="linkedin-btn"
+                          ><i class="fa fa-linkedin-square" aria-hidden="true" style="color: #0077b5; font-size: 2rem"></i>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" id="whatsapp-btn"
+                          ><i class="fa fa-whatsapp" aria-hidden="true" style="color: #25d366; font-size: 2rem"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-lg-6 single-b-wrap col-md-12 mt-3">
+                    <button class="btn btn-primary" id="shareBtn" style="display: none"><i class="fa fa fa-share text-white" aria-hidden="true"></i> Share</button>
                   </div>
                 </div>
+              </div>
+            </div>
 
 
                 <!-- Start comment-sec Area -->

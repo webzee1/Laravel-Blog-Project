@@ -28,7 +28,7 @@
                             @elseif(Auth::user()->role->id == 2)
                             <a href="" class="dropdown-item" target="_blank"> <i class="fa fa-user-circle" aria-hidden="true"></i>&nbsp;{{Auth::user()->name}}</a>
                             <a class="dropdown-item" href="{{ route('user.dashboard') }}"><i class="fa fa-tv" aria-hidden="true"></i>&nbsp; Dashboard</a>
-                            <a class="dropdown-item" href=""><i class="fa fa-heart" aria-hidden="true"></i>&nbsp; Favorite List</a>
+                            <a class="dropdown-item" href="{{route('user.like.posts')}}"><i class="fa fa-heart" aria-hidden="true"></i>&nbsp; Favorite List</a>
                             @else
                             null
                             @endif

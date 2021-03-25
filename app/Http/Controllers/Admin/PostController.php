@@ -213,4 +213,9 @@ class PostController extends Controller
         Toastr::success('Post Successfully Deleted');
         return redirect()->route('admin.post.index');
     }
+
+    public function likedUsers($post){
+        $post = Post::findOrFail($post);
+        return view('admin.post.likedUsers',compact('post'));
+    }
 }

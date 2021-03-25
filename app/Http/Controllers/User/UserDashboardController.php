@@ -12,4 +12,8 @@ class UserDashboardController extends Controller
     {
         return view('user.index');
     }
+
+    public function likedPosts(){
+        return view('user.likedPosts');
+     }
 }
