@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewPost;
+use App\Notifications\NewPostNotify;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Category;
 use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
@@ -12,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+
 
 class PostController extends Controller
 {
@@ -79,6 +84,18 @@ class PostController extends Controller
             $post->status = 1;
         }
         $post->save();
+
+
+        // Notification by mail
+        if($post->status){
+            $users = User::all();
+            foreach($users as $user){
+                Mail::to($user->email)->queue(new NewPost($post));
+                // Use notification to notify
+                // Notification::route('mail', $user->email)
+                //        ->notify(new NewPostNotify($post));
+            }
+        }
        
         $tags = [];
         $stingTags = array_map('trim', explode(',', $request->tags));
@@ -178,6 +195,17 @@ class PostController extends Controller
             $post->status = false;
         }
         $post->save();
+
+        // Notification by mail
+        if($post->status){
+            $users = User::all();
+            foreach($users as $user){
+                Mail::to($user->email)->queue(new NewPost($post));
+                // Use Notification
+                // Notification::route('mail', $user->email)
+                // ->notify(new NewPostNotify($post));
+            }
+        }
 
          // delete old tags
          $post->tags()->delete();

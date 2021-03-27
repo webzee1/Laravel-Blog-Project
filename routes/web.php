@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\View;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
+use App\Mail\NewPost;   
 
 
 
@@ -111,7 +112,19 @@ View::composer('layouts.frontend.partials.sidebar', function ($view) {
     $recentPosts = Post::latest()->take(3)->get();
     $recentTags = Tag::all();
     return $view->with('categories', $categories)->with('recentPosts', $recentPosts)->with('recentTags', $recentTags);
-});    
+    
+}); 
+
+
+// Send Mail
+Route::get('/send' , function(){
+    $post = Post::findOrFail(14);
+
+    Mail::to('user@user.com')
+    ->bcc(['user1@user.com' , 'user2@user.com'])
+    ->queue(new NewPost($post));
+    return (new App\Mail\NewPost($post))->render();
+});
 
 
     
