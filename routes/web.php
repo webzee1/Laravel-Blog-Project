@@ -40,6 +40,10 @@ use App\Http\Controllers\User\UserDashboardController;
 
 Auth::routes();
 
+//Social Login
+Route::get('login/google', [App\Http\Controllers\Auth\LoginController::class , 'redirectToProvider']);
+Route::get('login/google/callback', [App\Http\Controllers\Auth\LoginController::class , 'handleProviderCallback']);
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/posts', [HomeController::class, 'posts'])->name('posts');
 Route::get('/post/{slug}', [HomeController::class, 'post'])->name('post');
@@ -95,6 +99,11 @@ Route::group(['as' => 'user.' , 'prefix' => 'user' ,  'middleware' => ['auth' , 
     function () {
 
         Route::get('dashboard' , [UserDashboardController::class, 'index' ])->name('dashboard');
+
+        Route::get('profile' , [UserDashboardController::class, 'showProfile' ])->name('profile');
+        Route::put('profile' , [UserDashboardController::class, 'updateProfile' ])->name('profile.update');
+        Route::put('profile/password' , [UserDashboardController::class, 'changePassword' ])->name('profile.password');
+
         Route::get('comments' , [App\Http\Controllers\User\CommentController::class, 'index' ])->name('comment.index');
         Route::delete('/comment/{id}' , [App\Http\Controllers\User\CommentController::class, 'destroy'])->name('comment.destroy');
 

@@ -65,6 +65,16 @@
                             </div>
                         </div>
                     </form>
+
+                    <div class="row text-center">
+                        <h5 class="mx-auto my-3">Or Login with</h5>
+
+                    </div>
+                    <div class="row d-flex justify-content-center space-between">
+                        <a href="{{url('/login/google')}}" class="btn btn-outline-info m-2">Sing in with Google <img src="{{asset('frontend/img/google.jpg')}}" alt="" width="40px"></a><span class="text-dark font-weight-bold mt-3">
+
+                    </div>
+
                 </div>
             </div>
         </div>
